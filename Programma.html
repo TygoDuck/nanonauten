@@ -95,16 +95,14 @@ function draw() {
 	c.fillRect(0, 0, CANVAS_BREEDTE, GROND_Y - 40)
 
 	// Teken de achtergrond
-	//c.drawImage(nanonautAfbeelding, nanonautX - cameraX, nanonautY - cameraY);
 	c.drawImage(achtergrondAfbeelding,0,-210);
-	
+
 	//Teken de grond
 	c.fillStyle = 'ForestGreen';
 	c.fillRect(0, GROND_Y - 40, CANVAS_BREEDTE, CANVAS_HOOGTE - GROND_Y + 40);
 
 	//Teken de Nanonaut
 	c.drawImage(nanonautAfbeelding, nanonautX - cameraX, nanonautY - cameraY);
-	//c.drawImage(nanonautAfbeelding, nanonautX, nanonautY);
 }
 
 </script>
