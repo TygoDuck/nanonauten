@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Nanonauten in actie</title>
+</head>
+<body>
+<script>
+
+//CONSTANTEN
+var CANVAS_BREEDTE = 800;
+var CANVAS_HOOGTE = 600;
+var NANONAUT_BREEDTE = 181;
+var NANONAUT_HOOGTE = 229;
+var GROND_Y = 540;
+var NANONAUT_Y_VERSNELLING = 1;
+var SPATIEBALK_CODE = 32;
+var NANONAUT_SPRONG_SNELHEID = 20;
+var NANONAUT_X_SNELHEID = 5;    
+
+//INSTELLINGEN
+var canvas = document.createElement('canvas')
+var c = canvas.getContext('2d')
+var nanonautYSnelheid = 0;
+var nanonautIsInDeLucht = false;
+var spatiebalkIsIngedrukt = false;
+var cameraX = 0;
+var cameraY = 0;
+
+canvas.width = CANVAS_BREEDTE;
+canvas.height = CANVAS_HOOGTE;
+document.body.appendChild(canvas);
+
+var nanonautAfbeelding = new Image();
+nanonautAfbeelding.src = ('nanonaut.png');
+
+var achtergrondAfbeelding = new Image();
+achtergrondAfbeelding.src = ('achtergrond.png');
+
+var nanonautX = 50;
+var nanonautY = 40;
+
+window.addEventListener('keydown', onKeyDown);
+window.addEventListener('keyup', onKeyUp);
+
+window.addEventListener('load', start);
+
+function start() {
+	window.requestAnimationFrame(hoofdLus);
+}
+
+//HOOFD-LUS
+function hoofdLus(){
+	update();
+	draw();
+	window.requestAnimationFrame(hoofdLus)
+}
+
+//SPELER-HANDELINGEN
+function onKeyDown(event) {
+	if (event.keyCode === SPATIEBALK_CODE) {
+		spatiebalkIsIngedrukt = true;
+	}
+}
+function onKeyUp(event) {
+	if (event.keyCode === SPATIEBALK_CODE) {
+		spatiebalkIsIngedrukt = true;
+	}
+}
+
+//UPDATEN
+function update() {
+	nanonautX = nanonautX + NANONAUT_X_SNELHEID;
+	if (spatiebalkIsIngedrukt && !nanonautIsInDeLucht) {
+		nanonautYSnelheid = -NANONAUT_SPRONG_SNELHEID;
+		nanonautIsInDeLucht = true;
+	}
+
+	//Update de Nanonaut
+	nanonautY = nanonautY + nanonautYSnelheid;
+	nanonautYSnelheid = nanonautYSnelheid + NANONAUT_Y_VERSNELLING;
+	if (nanonautY > (GROND_Y - NANONAUT_HOOGTE)) {
+		nanonautY = GROND_Y - NANONAUT_HOOGTE;
+		naonautYSnelheid = 0;
+		nanonautIsInDeLucht = false;
+		spatiebalkIsIngedrukt = false;
+	}
+}
+
+
+//TEKENEN
+function draw() {
+	//Teken de lucht
+	c.fillStyle = 'LightSkyBlue';
+	c.fillRect(0, 0, CANVAS_BREEDTE, GROND_Y - 40)
+
+	// Teken de achtergrond
+	//c.drawImage(nanonautAfbeelding, nanonautX - cameraX, nanonautY - cameraY);
+	c.drawImage(achtergrondAfbeelding,0,-210);
+	
+	//Teken de grond
+	c.fillStyle = 'ForestGreen';
+	c.fillRect(0, GROND_Y - 40, CANVAS_BREEDTE, CANVAS_HOOGTE - GROND_Y + 40);
+
+	//Teken de Nanonaut
+	c.drawImage(nanonautAfbeelding, nanonautX - cameraX, nanonautY - cameraY);
+	//c.drawImage(nanonautAfbeelding, nanonautX, nanonautY);
+}
+
+</script>
+</body>
+</html>
