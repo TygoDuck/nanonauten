@@ -17,7 +17,9 @@ var NANONAUT_Y_VERSNELLING = 1;
 var SPATIEBALK_CODE = 32;
 var NANONAUT_SPRONG_SNELHEID = 20;
 var NANONAUT_X_SNELHEID = 5;
-var ACHTERGROND_BREEDTE = 1000; 
+var ACHTERGROND_BREEDTE = 1000;
+var NANONAUT_NR_FRAMES_PER_RIJ = 5;
+var NANONAUT_NR_ANIMATIEFRAMES = 7;
 
 //INSTELLINGEN
 var canvas = document.createElement('canvas')
@@ -25,6 +27,7 @@ var c = canvas.getContext('2d')
 var nanonautYSnelheid = 0;
 var nanonautIsInDeLucht = false;
 var spatiebalkIsIngedrukt = false;
+var nanonautFrameNr = 0;
 var cameraX = 0;
 var cameraY = 0;
 
@@ -33,7 +36,7 @@ canvas.height = CANVAS_HOOGTE;
 document.body.appendChild(canvas);
 
 var nanonautAfbeelding = new Image();
-nanonautAfbeelding.src = ('nanonaut.png');
+nanonautAfbeelding.src = ('geanimeerdeNanonaut.png');
 
 var achtergrondAfbeelding = new Image();
 achtergrondAfbeelding.src = ('achtergrond.png');
@@ -107,7 +110,11 @@ function draw() {
 	c.fillRect(0, GROND_Y - 40, CANVAS_BREEDTE, CANVAS_HOOGTE - GROND_Y + 40);
 
 	//Teken de Nanonaut
-	c.drawImage(nanonautAfbeelding, nanonautX - cameraX, nanonautY - cameraY);
+	var nanonautSpriteSheetRij = Math.floor(nanonautFramNr / NANONAUT_NR_FRAMES_PER_RIJ);
+	var nanonautSpriteSheetKolom = nanonautFramNr % NANONAUT_NR_FRAMES_PER_RIJ;
+	var nanonautSpriteSheetX = nanonautSpriteSheetKolom * NANONAUT_BREEDTE;
+	var nanonautSpriteSheetY = nanonautSpriteSheetRij * NANONAUT_HOOGTE;
+	c.drawImage(nanonautAfbeelding, nanonautSpriteSheetX, nanonautSpriteSheetY, NANONAUT_BREEDTE, NANONAUT_HOOGTE, nanonautX - cameraX, nanonautY - cameraY, NANONAUT_BREEDTE, NANONAUT_HOOGTE);
 }
 
 </script>
