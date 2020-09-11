@@ -20,6 +20,7 @@ var NANONAUT_X_SNELHEID = 5;
 var ACHTERGROND_BREEDTE = 1000;
 var NANONAUT_NR_FRAMES_PER_RIJ = 5;
 var NANONAUT_NR_ANIMATIEFRAMES = 7;
+var NANONAUT_ANIMATIESNELHEID = 3
 
 //INSTELLINGEN
 var canvas = document.createElement('canvas')
@@ -28,6 +29,7 @@ var nanonautYSnelheid = 0;
 var nanonautIsInDeLucht = false;
 var spatiebalkIsIngedrukt = false;
 var nanonautFrameNr = 0;
+var spelFrameTeller = 0;
 var cameraX = 0;
 var cameraY = 0;
 
@@ -74,10 +76,13 @@ function onKeyUp(event) {
 
 //UPDATEN
 function update() {
-	nanonautX = nanonautX + NANONAUT_X_SNELHEID;
-	if (spatiebalkIsIngedrukt && !nanonautIsInDeLucht) {
-		nanonautYSnelheid = -NANONAUT_SPRONG_SNELHEID;
-		nanonautIsInDeLucht = true;
+	console.log("update");
+	spelFrameTeller = spelFrameTeller + 1;
+		if ((spelFrameTeller % NANONAUT_ANIMATIESNELHEID) === 0) {
+			nanonautFrameNr = nanonautFrameNr + 1;
+				if (nanonautFrameNr >= NANONAUT_NR_ANIMATIEFRAMES) {
+						nanonautFrameNr = 0;
+		}
 	}
 
 	//Update de Nanonaut
@@ -89,6 +94,13 @@ function update() {
 		nanonautIsInDeLucht = false;
 		spatiebalkIsIngedrukt = false;
 	}
+
+	//Update de animatie
+		nanonautFrameNr = nanonautFrameNr + 1;
+			if (nanonautFrameNr >= NANONAUT_NR_ANIMATIEFRAMES) {
+				nanonautFrameNr = 0;
+	}
+
 	//Update de camera
 		cameraX = nanonautX - 150;
 }
@@ -96,6 +108,7 @@ function update() {
 
 //TEKENEN
 function draw() {
+	console.log("draw");
 	//Teken de lucht
 	c.fillStyle = 'LightSkyBlue';
 	c.fillRect(0, 0, CANVAS_BREEDTE, GROND_Y - 40)
@@ -110,8 +123,8 @@ function draw() {
 	c.fillRect(0, GROND_Y - 40, CANVAS_BREEDTE, CANVAS_HOOGTE - GROND_Y + 40);
 
 	//Teken de Nanonaut
-	var nanonautSpriteSheetRij = Math.floor(nanonautFramNr / NANONAUT_NR_FRAMES_PER_RIJ);
-	var nanonautSpriteSheetKolom = nanonautFramNr % NANONAUT_NR_FRAMES_PER_RIJ;
+	var nanonautSpriteSheetRij = Math.floor(nanonautFrameNr / NANONAUT_NR_FRAMES_PER_RIJ);
+	var nanonautSpriteSheetKolom = nanonautFrameNr % NANONAUT_NR_FRAMES_PER_RIJ;
 	var nanonautSpriteSheetX = nanonautSpriteSheetKolom * NANONAUT_BREEDTE;
 	var nanonautSpriteSheetY = nanonautSpriteSheetRij * NANONAUT_HOOGTE;
 	c.drawImage(nanonautAfbeelding, nanonautSpriteSheetX, nanonautSpriteSheetY, NANONAUT_BREEDTE, NANONAUT_HOOGTE, nanonautX - cameraX, nanonautY - cameraY, NANONAUT_BREEDTE, NANONAUT_HOOGTE);
