@@ -81,7 +81,6 @@ function update() {
 
 	//update de animatie
 	if ((spelFrameTeller % NANONAUT_ANIMATIESNELHEID) === 0) {
-		console.log(nanonautFrameNr);
 		nanonautFrameNr = nanonautFrameNr + 1;
 		if (nanonautFrameNr >= NANONAUT_NR_ANIMATIEFRAMES) {
 			nanonautFrameNr = 0;
